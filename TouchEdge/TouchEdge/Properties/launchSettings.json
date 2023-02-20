@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TouchEdge (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "TouchEdge (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
