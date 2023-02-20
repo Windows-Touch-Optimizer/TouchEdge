@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
+using Microsoft.UI.Windowing;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -31,7 +33,9 @@ namespace TouchEdge
         public MainWindow()
         {
             this.InitializeComponent();
-            
+            GetAppWindowAndPresenter();
+            _apw.IsShownInSwitchers = false;
+            _presenter.SetBorderAndTitleBar(false, false);
 
         }
 
@@ -47,12 +51,26 @@ namespace TouchEdge
                                         0, 0, width, height,
                                         Windows.Win32.UI.WindowsAndMessaging.SET_WINDOW_POS_FLAGS.SWP_NOMOVE);
             // PInvoke.SetWindowLong(hwnd, Windows.Win32.UI.WindowsAndMessaging.WINDOW_LONG_PTR_INDEX.GWL_STYLE, 0);
+            //window.ExtendsContentIntoTitleBar = true;
+            //window.SetTitleBar(null);
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = "Clicked";
+            //myButton.Content = "Clicked";
             SetWindowSize(this, 100, 100);
         }
+
+        public void GetAppWindowAndPresenter()
+        {
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            _apw = AppWindow.GetFromWindowId(myWndId);
+            _presenter = _apw.Presenter as OverlappedPresenter;
+        }
+
+
+        private AppWindow _apw;
+        private OverlappedPresenter _presenter;
     }
 }
